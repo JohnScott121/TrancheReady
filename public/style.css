@@ -1,0 +1,19 @@
+:root{--ink:#1b1f23;--muted:#6b7280;--bg:#fafafa;--card:#fff;--accent:#0b5fff}
+html,body{background:var(--bg);color:var(--ink);font-family:Inter,Segoe UI,system-ui,Arial,sans-serif}
+body{max-width:1100px;margin:32px auto;padding:0 16px}
+header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+h1{font-weight:700} .muted{color:var(--muted)}
+.tag{background:#eef2ff;color:#1e3a8a;padding:4px 8px;border-radius:999px;font-size:12px}
+.card{background:var(--card);border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin:12px 0;box-shadow:0 1px 0 rgba(0,0,0,0.03)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+label{display:block;margin:8px 0 4px}
+input[type=file]{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;background:#fff}
+button,.btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{border-bottom:1px solid #eee;padding:8px;text-align:left}
+thead th{background:#f8fafc}
+.pill{color:#fff;padding:2px 8px;border-radius:999px;font-size:12px}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+footer{margin:24px 0;color:var(--muted);font-size:12px}
+.help pre{background:#f6f7f9;border:1px solid #e5e7eb;padding:8px;border-radius:8px;overflow:auto}
