@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: tranche-ready
+    env: node
+    plan: starter
+    buildCommand: "npm install"
+    startCommand: "node server.js"
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: OPENAI_API_KEY
+        sync: false
+    disk:
+      name: evidence
+      mountPath: /opt/render/project/src/runs
+      sizeGB: 1
