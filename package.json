@@ -5,6 +5,8 @@
   "main": "server.js",
   "scripts": { "start": "node server.js" },
   "dependencies": {
+    "csv-parse": "^5.5.0",
+    "multer": "^1.4.5"
     "archiver": "^6.0.2",
     "compression": "^1.7.4",
     "dayjs": "^1.11.11",
