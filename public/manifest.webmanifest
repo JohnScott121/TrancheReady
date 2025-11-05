@@ -1,0 +1,11 @@
+{
+  "name": "TrancheReady",
+  "short_name": "TrancheReady",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#5c86ff",
+  "icons": [
+    { "src": "/logo.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
