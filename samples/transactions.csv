@@ -1,0 +1,6 @@
+date,client,client_id,amount,currency,country,method,cash
+2025-09-01,Smith & Co,1,12000,AUD,AU,cash,Y
+2025-09-02,Blue Apartments,2,4000,AUD,RU,bank_transfer,N
+2025-09-05,Blue Apartments,2,3500,AUD,RU,bank_transfer,N
+2025-09-07,Blue Apartments,2,3200,AUD,RU,bank_transfer,N
+2025-09-10,Jane Lee,3,9000,AUD,AU,cash,N
