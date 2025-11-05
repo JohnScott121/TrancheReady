@@ -4,10 +4,16 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>TrancheReady — AML Tranche 2</title>
+  <meta name="description" content="Generate AML/CTF Tranche 2 risk assessments, monitoring cases and signed evidence packs from CSVs.">
   <link rel="stylesheet" href="/style.css"/>
+  <link rel="icon" href="/logo.svg" type="image/svg+xml">
+  <meta property="og:title" content="TrancheReady — AML Tranche 2"/>
+  <meta property="og:description" content="Upload CSVs → audit-ready evidence packs with SHA-256 manifests."/>
 </head>
 <body>
   <div class="container">
+
+    <!-- HEADER -->
     <div class="header">
       <div class="brand">
         <img src="/logo.svg" alt="TrancheReady"/>
@@ -17,28 +23,82 @@
       <div class="meta">OpenAI: <b><%= hasKey ? "enabled" : "off" %></b></div>
     </div>
 
-    <div class="card" style="margin-top:6px">
-      <p class="notice">Upload your <b>Clients</b> and <b>Transactions</b> CSVs. We’ll score client risk, flag monitoring cases, and produce an audit-ready evidence pack (ZIP) with a signed SHA-256 manifest.</p>
-      <form action="/ingest" method="post" enctype="multipart/form-data" style="margin-top:14px">
-        <label>Clients CSV</label>
-        <input type="file" name="clients" accept=".csv" required />
-        <label style="margin-top:12px">Transactions CSV</label>
-        <input type="file" name="transactions" accept=".csv" required />
-        <div style="display:flex;gap:10px;align-items:center;margin-top:16px">
-          <button class="btn" type="submit">Generate Risk & Pack</button>
-          <a class="btn secondary" href="https://github.com/your/repo/samples" target="_blank" rel="noreferrer">See CSV Samples</a>
-        </div>
-      </form>
-    </div>
+    <!-- HERO -->
+    <section class="hero card">
+      <div class="hero-copy">
+        <h2>Audit-ready AML packs in minutes.</h2>
+        <p class="muted">
+          Upload your <b>Clients</b> & <b>Transactions</b> CSVs. TrancheReady generates
+          explainable risk scores, monitoring cases, and a signed SHA-256 evidence pack.
+        </p>
+        <ul class="checks">
+          <li>Explainable scoring (country, channel, PEP, services)</li>
+          <li>Monitoring: large cash, structuring, high-risk corridors</li>
+          <li>Evidence ZIP with <code>manifest.json</code> (SHA-256)</li>
+        </ul>
+      </div>
+      <div class="hero-cta">
+        <form action="/ingest" method="post" enctype="multipart/form-data" class="upload-form" id="uploadForm">
+          <div class="dropzone" id="dropzone">
+            <div class="dz-icon">⬆</div>
+            <div class="dz-text">
+              <b>Drag & drop</b> your CSVs here<br/>
+              <span class="muted">or click to choose files</span>
+            </div>
+            <input class="hidden-input" id="clientsInput" type="file" name="clients" accept=".csv" required/>
+            <input class="hidden-input" id="txnsInput" type="file" name="transactions" accept=".csv" required/>
+          </div>
 
-    <div class="card" style="margin-top:14px">
-      <h2 style="margin:0 0 8px 0;font-size:16px">Expected columns</h2>
-      <pre class="mono" style="font-size:12px;color:#cbd5e1;background:#0d1430;border:1px solid #1f2740;padding:10px;border-radius:10px;overflow:auto">
-Clients: id,name,type,country,pep,channel,sector,services
+          <div class="file-pickers">
+            <label>Clients CSV</label>
+            <input type="file" name="clients" accept=".csv" onChange="syncToHidden(this,'clientsInput')" />
+            <label>Transactions CSV</label>
+            <input type="file" name="transactions" accept=".csv" onChange="syncToHidden(this,'txnsInput')" />
+          </div>
+
+          <div class="actions">
+            <button class="btn" type="submit">Generate Risk & Pack</button>
+            <a class="btn secondary" href="/samples/clients.csv" download>Clients sample</a>
+            <a class="btn secondary" href="/samples/transactions.csv" download>Transactions sample</a>
+          </div>
+          <div class="notice small" id="validationMsg"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- TRUST STRIP -->
+    <section class="trust">
+      <div class="chip">No credentials required</div>
+      <div class="chip">CSV in • ZIP out</div>
+      <div class="chip">Signed manifests</div>
+      <div class="chip">Auditor-friendly</div>
+    </section>
+
+    <!-- DETAILS -->
+    <section class="grid cols-2">
+      <div class="card">
+        <h3 class="card-title">Expected columns</h3>
+        <pre class="mono hintbox">Clients: id,name,type,country,pep,channel,sector,services
 Txns:    date,client,client_id,amount,currency,country,method,cash</pre>
-    </div>
+        <p class="muted" style="margin-top:8px">CSV headers can include extra columns—unused fields are ignored.</p>
+      </div>
+      <div class="card">
+        <h3 class="card-title">How it works</h3>
+        <ol class="steps">
+          <li>Upload CSVs (or start with our samples)</li>
+          <li>We normalise, score, and detect cases</li>
+          <li>Download the evidence pack (ZIP) and share a verify link</li>
+        </ol>
+      </div>
+    </section>
 
     <div class="footer">© TrancheReady — Evidence you can trust.</div>
   </div>
+
+  <script src="/ui.js"></script>
+  <script>
+    // Bridge visible pickers to the hidden required inputs used by the dropzone form
+    function syncToHidden(src, id){ const h = document.getElementById(id); h.files = src.files; }
+  </script>
 </body>
 </html>
