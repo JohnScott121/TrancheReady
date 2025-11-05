@@ -1,0 +1,23 @@
+<!doctype html><html><head>
+<meta charset="utf-8"/><title>TrancheReady — AML Tranche 2</title>
+<link rel="stylesheet" href="/style.css"/>
+</head><body>
+<header><h1>TrancheReady</h1><div class="tag">AML Tranche 2</div></header>
+<p class="muted">Upload your Clients & Transactions CSV. We’ll score risk, flag monitoring cases, and build an evidence pack with signed hashes.</p>
+<p class="muted">OpenAI key: <b><%= hasKey ? "Detected" : "Not set (using concise templates)" %></b></p>
+<form action="/ingest" method="post" enctype="multipart/form-data" class="card">
+  <label>Clients CSV</label>
+  <input type="file" name="clients" accept=".csv" required />
+  <label>Transactions CSV</label>
+  <input type="file" name="transactions" accept=".csv" required />
+  <button type="submit">Generate Risk & Pack</button>
+</form>
+<section class="help">
+  <h2>CSV Columns (recommended)</h2>
+  <pre>Clients: id,name,type,country,pep,channel,sector,services
+Txns:    date,client,client_id,amount,currency,country,method,cash</pre>
+  <p>Try the samples in the <code>/samples</code> folder if you just want to test quickly.</p>
+</section>
+<footer>© TrancheReady — Evidence you can trust.</footer>
+</body></html>
+ 
