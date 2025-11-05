@@ -1,14 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>TrancheReady — AML Tranche 2</title>
   <meta name="description" content="Generate AML/CTF Tranche 2 risk assessments, monitoring cases and signed evidence packs from CSVs.">
+  <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/style.css"/>
   <link rel="icon" href="/logo.svg" type="image/svg+xml">
-  <meta property="og:title" content="TrancheReady — AML Tranche 2"/>
-  <meta property="og:description" content="Upload CSVs → audit-ready evidence packs with SHA-256 manifests."/>
 </head>
 <body>
   <div class="container">
@@ -20,7 +19,11 @@
         <h1>TrancheReady</h1>
         <span class="tag">AML Tranche 2</span>
       </div>
-      <div class="meta">OpenAI: <b><%= hasKey ? "enabled" : "off" %></b></div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <button class="btn secondary" id="installBtn" title="Install app">Install</button>
+        <button class="btn secondary" id="themeToggle" title="Toggle theme">Light/Dark</button>
+        <div class="meta">OpenAI: <b><%= hasKey ? "enabled" : "off" %></b></div>
+      </div>
     </div>
 
     <!-- HERO -->
@@ -50,8 +53,19 @@
           </div>
 
           <div class="file-pickers">
+            <label>Sector preset (optional)</label>
+            <select id="sectorPreset">
+              <option value="">Select sector…</option>
+              <option value="legal">Legal / Conveyancing</option>
+              <option value="accounting">Accounting</option>
+              <option value="real_estate">Real Estate</option>
+            </select>
+
+            <div></div> <!-- spacer -->
+
             <label>Clients CSV</label>
             <input type="file" name="clients" accept=".csv" onChange="syncToHidden(this,'clientsInput')" />
+
             <label>Transactions CSV</label>
             <input type="file" name="transactions" accept=".csv" onChange="syncToHidden(this,'txnsInput')" />
           </div>
@@ -62,6 +76,7 @@
             <a class="btn secondary" href="/samples/transactions.csv" download>Transactions sample</a>
           </div>
           <div class="notice small" id="validationMsg"></div>
+          <div class="progress" id="progress" style="display:none"><div class="bar" id="bar"></div></div>
         </form>
       </div>
     </section>
@@ -72,6 +87,7 @@
       <div class="chip">CSV in • ZIP out</div>
       <div class="chip">Signed manifests</div>
       <div class="chip">Auditor-friendly</div>
+      <a class="chip" href="/legal">Terms & Privacy</a>
     </section>
 
     <!-- DETAILS -->
@@ -80,7 +96,7 @@
         <h3 class="card-title">Expected columns</h3>
         <pre class="mono hintbox">Clients: id,name,type,country,pep,channel,sector,services
 Txns:    date,client,client_id,amount,currency,country,method,cash</pre>
-        <p class="muted" style="margin-top:8px">CSV headers can include extra columns—unused fields are ignored.</p>
+        <p class="muted" style="margin-top:8px">Extra columns are ignored; only the headers shown are used.</p>
       </div>
       <div class="card">
         <h3 class="card-title">How it works</h3>
@@ -97,8 +113,7 @@ Txns:    date,client,client_id,amount,currency,country,method,cash</pre>
 
   <script src="/ui.js"></script>
   <script>
-    // Bridge visible pickers to the hidden required inputs used by the dropzone form
-    function syncToHidden(src, id){ const h = document.getElementById(id); h.files = src.files; }
+    function syncToHidden(src, id){ const h=document.getElementById(id); h.files=src.files; }
   </script>
 </body>
 </html>
