@@ -1,0 +1,60 @@
+<!doctype html><html><head>
+<meta charset="utf-8"/><title>Results — TrancheReady</title>
+<link rel="stylesheet" href="/style.css"/>
+</head><body>
+<header><h1>Results</h1><div class="tag">Pack ready</div></header>
+
+<section class="grid">
+  <div class="card">
+    <h2>Client Risk (sorted)</h2>
+    <table>
+      <thead><tr><th>Client</th><th>Band</th><th>Score</th><th>Country</th><th>Channel</th><th>Services</th></tr></thead>
+      <tbody>
+      <% clients.forEach(c => { %>
+        <tr>
+          <td><b><%= c.name %></b></td>
+          <td><span class="pill" style="background:<%= c.riskColor %>"><%= c.riskBand %></span></td>
+          <td><%= c.riskScore %></td>
+          <td><%= c.country %></td>
+          <td><%= c.channel %></td>
+          <td><%= (c.services||[]).join(", ") %></td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Monitoring Cases (<%= cases.length %>)</h2>
+    <table>
+      <thead><tr><th>Rule</th><th>Client</th><th>Date</th><th>Detail</th></tr></thead>
+      <tbody>
+      <% cases.forEach(k => { %>
+        <tr title="<%= k.narrative %>">
+          <td><code><%= k.rule %></code></td>
+          <td><%= k.client %></td>
+          <td><%= k.date %></td>
+          <td><%= k.detail %></td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+    <p class="muted">Hover a row for narrative. OpenAI key: <b><%= hasKey ? "on" : "off" %></b></p>
+  </div>
+</section>
+
+<section class="grid">
+  <div class="card">
+    <h2>Evidence Pack</h2>
+    <p>ZIP includes JSON, AML Program HTML, and a signed <code>manifest.json</code> with SHA-256 checksums.</p>
+    <a class="btn" href="/download/<%= runId %>">Download Pack</a>
+  </div>
+  <div class="card">
+    <h2>Share Link (auditor)</h2>
+    <p>Send this read-only link. It includes a verification page that displays file hashes.</p>
+    <div class="mono">/share/<%= token %></div>
+  </div>
+</section>
+
+<footer>© TrancheReady — Audit-ready in minutes.</footer>
+</body></html>
