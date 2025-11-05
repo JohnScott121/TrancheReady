@@ -1,4 +1,0 @@
-id,name,type,country,pep,channel,sector,services
-1,Smith & Co,company,AU,N,face_to_face,legal,"conveyancing;trust_account"
-2,Blue Apartments,company,RU,N,introduced,real_estate,"real_estate_purchase"
-3,Jane Lee,individual,AU,Y,non_face_to_face,accounting,"company_setup"
