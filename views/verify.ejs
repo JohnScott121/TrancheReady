@@ -1,0 +1,22 @@
+<!doctype html><html><head>
+<meta charset="utf-8"/><title>Verify Evidence — TrancheReady</title>
+<link rel="stylesheet" href="/style.css"/>
+</head><body>
+<header><h1>Verify Evidence</h1><div class="tag">Integrity</div></header>
+<p class="muted">This page lists files and their stored SHA-256 hashes from the pack’s manifest. Auditors can download the pack, recompute locally, and compare.</p>
+<div class="card">
+  <table>
+    <thead><tr><th>File</th><th>Bytes</th><th>SHA-256</th></tr></thead>
+    <tbody>
+    <% Object.entries(manifest).forEach(([file, meta]) => { %>
+      <tr>
+        <td class="mono"><%= file %></td>
+        <td><%= meta.bytes %></td>
+        <td class="mono"><%= meta.sha256 %></td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+</div>
+<footer>© TrancheReady — Integrity by design.</footer>
+</body></html>
