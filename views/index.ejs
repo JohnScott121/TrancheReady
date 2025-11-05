@@ -1,23 +1,44 @@
-<!doctype html><html><head>
-<meta charset="utf-8"/><title>TrancheReady — AML Tranche 2</title>
-<link rel="stylesheet" href="/style.css"/>
-</head><body>
-<header><h1>TrancheReady</h1><div class="tag">AML Tranche 2</div></header>
-<p class="muted">Upload your Clients & Transactions CSV. We’ll score risk, flag monitoring cases, and build an evidence pack with signed hashes.</p>
-<p class="muted">OpenAI key: <b><%= hasKey ? "Detected" : "Not set (using concise templates)" %></b></p>
-<form action="/ingest" method="post" enctype="multipart/form-data" class="card">
-  <label>Clients CSV</label>
-  <input type="file" name="clients" accept=".csv" required />
-  <label>Transactions CSV</label>
-  <input type="file" name="transactions" accept=".csv" required />
-  <button type="submit">Generate Risk & Pack</button>
-</form>
-<section class="help">
-  <h2>CSV Columns (recommended)</h2>
-  <pre>Clients: id,name,type,country,pep,channel,sector,services
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>TrancheReady — AML Tranche 2</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <img src="/logo.svg" alt="TrancheReady"/>
+        <h1>TrancheReady</h1>
+        <span class="tag">AML Tranche 2</span>
+      </div>
+      <div class="meta">OpenAI: <b><%= hasKey ? "enabled" : "off" %></b></div>
+    </div>
+
+    <div class="card" style="margin-top:6px">
+      <p class="notice">Upload your <b>Clients</b> and <b>Transactions</b> CSVs. We’ll score client risk, flag monitoring cases, and produce an audit-ready evidence pack (ZIP) with a signed SHA-256 manifest.</p>
+      <form action="/ingest" method="post" enctype="multipart/form-data" style="margin-top:14px">
+        <label>Clients CSV</label>
+        <input type="file" name="clients" accept=".csv" required />
+        <label style="margin-top:12px">Transactions CSV</label>
+        <input type="file" name="transactions" accept=".csv" required />
+        <div style="display:flex;gap:10px;align-items:center;margin-top:16px">
+          <button class="btn" type="submit">Generate Risk & Pack</button>
+          <a class="btn secondary" href="https://github.com/your/repo/samples" target="_blank" rel="noreferrer">See CSV Samples</a>
+        </div>
+      </form>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h2 style="margin:0 0 8px 0;font-size:16px">Expected columns</h2>
+      <pre class="mono" style="font-size:12px;color:#cbd5e1;background:#0d1430;border:1px solid #1f2740;padding:10px;border-radius:10px;overflow:auto">
+Clients: id,name,type,country,pep,channel,sector,services
 Txns:    date,client,client_id,amount,currency,country,method,cash</pre>
-  <p>Try the samples in the <code>/samples</code> folder if you just want to test quickly.</p>
-</section>
-<footer>© TrancheReady — Evidence you can trust.</footer>
-</body></html>
- 
+    </div>
+
+    <div class="footer">© TrancheReady — Evidence you can trust.</div>
+  </div>
+</body>
+</html>
