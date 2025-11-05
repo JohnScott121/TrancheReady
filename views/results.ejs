@@ -1,60 +1,108 @@
-<!doctype html><html><head>
-<meta charset="utf-8"/><title>Results — TrancheReady</title>
-<link rel="stylesheet" href="/style.css"/>
-</head><body>
-<header><h1>Results</h1><div class="tag">Pack ready</div></header>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Results — TrancheReady</title>
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <img src="/logo.svg" alt="TrancheReady"/>
+        <h1>Results</h1>
+        <span class="tag">Pack ready</span>
+      </div>
+      <div class="meta">OpenAI: <b><%= hasKey ? "on" : "off" %></b></div>
+    </div>
 
-<section class="grid">
-  <div class="card">
-    <h2>Client Risk (sorted)</h2>
-    <table>
-      <thead><tr><th>Client</th><th>Band</th><th>Score</th><th>Country</th><th>Channel</th><th>Services</th></tr></thead>
-      <tbody>
-      <% clients.forEach(c => { %>
-        <tr>
-          <td><b><%= c.name %></b></td>
-          <td><span class="pill" style="background:<%= c.riskColor %>"><%= c.riskBand %></span></td>
-          <td><%= c.riskScore %></td>
-          <td><%= c.country %></td>
-          <td><%= c.channel %></td>
-          <td><%= (c.services||[]).join(", ") %></td>
-        </tr>
-      <% }) %>
-      </tbody>
-    </table>
-  </div>
+    <!-- KPIs -->
+    <div class="kpis">
+      <div class="kpi">
+        <div class="label">High-risk clients</div>
+        <div class="value"><%= clients.filter(c=>c.riskBand==='High').length %></div>
+      </div>
+      <div class="kpi">
+        <div class="label">Monitoring cases</div>
+        <div class="value"><%= cases.length %></div>
+      </div>
+      <div class="kpi">
+        <div class="label">Top country risk</div>
+        <div class="value">
+          <% const top = clients[0]; %>
+          <%= top ? top.country : '-' %>
+        </div>
+      </div>
+      <div class="kpi">
+        <div class="label">Generated</div>
+        <div class="value"><%= new Date().toLocaleString() %></div>
+      </div>
+    </div>
 
-  <div class="card">
-    <h2>Monitoring Cases (<%= cases.length %>)</h2>
-    <table>
-      <thead><tr><th>Rule</th><th>Client</th><th>Date</th><th>Detail</th></tr></thead>
-      <tbody>
-      <% cases.forEach(k => { %>
-        <tr title="<%= k.narrative %>">
-          <td><code><%= k.rule %></code></td>
-          <td><%= k.client %></td>
-          <td><%= k.date %></td>
-          <td><%= k.detail %></td>
-        </tr>
-      <% }) %>
-      </tbody>
-    </table>
-    <p class="muted">Hover a row for narrative. OpenAI key: <b><%= hasKey ? "on" : "off" %></b></p>
-  </div>
-</section>
+    <div class="grid cols-2" style="margin-top:14px">
+      <div class="card">
+        <h2 style="margin:0 0 10px 0;font-size:16px">Client Risk (sorted)</h2>
+        <table class="table">
+          <thead><tr><th>Client</th><th>Band</th><th>Score</th><th>Country</th><th>Channel</th><th>Services</th></tr></thead>
+          <tbody>
+          <% clients.forEach(c => { %>
+            <tr>
+              <td><b><%= c.name %></b></td>
+              <td>
+                <% if (c.riskBand==='High'){ %>
+                  <span class="pill bad">High</span>
+                <% } else if (c.riskBand==='Medium'){ %>
+                  <span class="pill warn">Medium</span>
+                <% } else { %>
+                  <span class="pill good">Low</span>
+                <% } %>
+              </td>
+              <td><%= c.riskScore %></td>
+              <td><%= c.country %></td>
+              <td><%= c.channel %></td>
+              <td><%= (c.services||[]).join(", ") %></td>
+            </tr>
+          <% }) %>
+          </tbody>
+        </table>
+      </div>
 
-<section class="grid">
-  <div class="card">
-    <h2>Evidence Pack</h2>
-    <p>ZIP includes JSON, AML Program HTML, and a signed <code>manifest.json</code> with SHA-256 checksums.</p>
-    <a class="btn" href="/download/<%= runId %>">Download Pack</a>
-  </div>
-  <div class="card">
-    <h2>Share Link (auditor)</h2>
-    <p>Send this read-only link. It includes a verification page that displays file hashes.</p>
-    <div class="mono">/share/<%= token %></div>
-  </div>
-</section>
+      <div class="card">
+        <h2 style="margin:0 0 10px 0;font-size:16px">Monitoring Cases (<%= cases.length %>)</h2>
+        <table class="table">
+          <thead><tr><th>Rule</th><th>Client</th><th>Date</th><th>Detail</th></tr></thead>
+          <tbody>
+          <% cases.forEach(k => { %>
+            <tr title="<%= (k.narrative||'').replace(/\"/g,'&quot;') %>">
+              <td><code><%= k.rule %></code></td>
+              <td><%= k.client %></td>
+              <td><%= k.date %></td>
+              <td><%= k.detail %></td>
+            </tr>
+          <% }) %>
+          </tbody>
+        </table>
+        <p class="notice">Hover a row to see the narrative. Narratives are generated <b><%= hasKey ? 'with AI' : 'from templates' %></b>.</p>
+      </div>
+    </div>
 
-<footer>© TrancheReady — Audit-ready in minutes.</footer>
-</body></html>
+    <div class="grid cols-2" style="margin-top:6px">
+      <div class="card">
+        <h2 style="margin:0 0 10px 0;font-size:16px">Evidence Pack</h2>
+        <p class="notice">ZIP contains JSON, program.html, and a signed <code>manifest.json</code> with SHA-256 hashes.</p>
+        <a class="btn" href="/download/<%= runId %>">Download Pack</a>
+      </div>
+      <div class="card">
+        <h2 style="margin:0 0 10px 0;font-size:16px">Share (auditor view)</h2>
+        <p class="notice">Send this read-only link for manifest verification.</p>
+        <div class="mono" style="font-size:13px;background:#0d1430;border:1px solid #1f2740;padding:10px;border-radius:10px">
+          /share/<%= token %>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">© TrancheReady — Audit-ready in minutes.</div>
+  </div>
+</body>
+</html>
